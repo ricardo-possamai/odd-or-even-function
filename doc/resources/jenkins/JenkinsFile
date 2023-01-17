@@ -11,13 +11,17 @@ node {
         }
 
         stage('Publish') {
-            def RESOURCE_GROUP = '<resource_group>' 
-            def FUNC_NAME = '<function_app>'
+            def RESOURCE_GROUP = 'az_functions' 
+            def FUNC_NAME = 'javateste'
             // login Azure
-            withCredentials([usernamePassword(credentialsId: 'azuresp', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
+            withCredentials([
+                            string(credentialsId: 'AZ_USER', variable: 'azuser'),
+                            string(credentialsId: 'AZ_PASS', variable: 'azpass'),
+                            string(credentialsId: 'AZ_TENANT', variable: 'aztenant'), 
+                            )]) {
             sh '''
-                az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
-                az account set -s $AZURE_SUBSCRIPTION_ID
+                sh 'az login --service-principal --username $azuser --password $azpass --tenant $aztenant'
+                
             '''
             }
             sh 'cd $PWD/target/azure-functions/odd-or-even-function-sample && zip -r ../../../archive.zip ./* && cd -'
