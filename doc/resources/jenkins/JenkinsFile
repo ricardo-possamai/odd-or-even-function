@@ -3,7 +3,7 @@ pipeline  {
     tools {
     maven 'maven-3.6.3'}
         
-        
+    stages {
         stage('Init') {
             cleanWs()
             checkout scm
@@ -33,5 +33,5 @@ pipeline  {
             sh "az functionapp deployment source config-zip -g $RESOURCE_GROUP -n $FUNC_NAME --src archive.zip"
             sh 'az logout'
         }
-    
+    }
 }
