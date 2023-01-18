@@ -1,11 +1,7 @@
 pipeline  {
     agent any
-    withEnv(['AZURE_SUBSCRIPTION_ID=99999999-9999-9999-9999-999999999999',
-            'AZURE_TENANT_ID=99999999-9999-9999-9999-999999999999']) {
-        
-        tools {
-    maven 'maven-3.6.3' 
-  }
+    tools {
+    maven 'maven-3.6.3'}
         
         
         stage('Init') {
@@ -37,5 +33,5 @@ pipeline  {
             sh "az functionapp deployment source config-zip -g $RESOURCE_GROUP -n $FUNC_NAME --src archive.zip"
             sh 'az logout'
         }
-    }
+    
 }
