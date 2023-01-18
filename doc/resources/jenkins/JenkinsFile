@@ -14,8 +14,6 @@ pipeline  {
 
         stage('Publish') {
             steps{
-            def RESOURCE_GROUP = 'az_functions' 
-            def FUNC_NAME = 'javateste'
             // login Azure
             withCredentials([
                             string(credentialsId: 'AZ_USER', variable: 'azuser'),
@@ -28,7 +26,7 @@ pipeline  {
             '''
             }
             sh 'cd $PWD/target/azure-functions/odd-or-even-function-sample && zip -r ../../../archive.zip ./* && cd -'
-            sh "az functionapp deployment source config-zip -g $RESOURCE_GROUP -n $FUNC_NAME --src archive.zip"
+            sh "az functionapp deployment source config-zip -g 'az_functions' -n 'javateste' --src archive.zip"
             sh 'az logout'
         }
         }
